@@ -1,19 +1,27 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export class MovieCard extends React.Component {
   render() {
     const { movie, onMovieClick } = this.props;
     return (
-      <div
-        className="movie-card"
-        // onClick() event listener will set selectedMovie variable in main-view to this movie
-
-        onClick={() => {
-          onMovieClick(movie);
-        }}
-      >
+      <div onClick={() => onMovieClick(movie)} className="movie-card">
         {movie.Title}
       </div>
     );
   }
 }
+MovieCard.propTypes = {
+  movie: PropTypes.shape({
+    Title: PropTypes.string.isRequired,
+    Description: PropTypes.string.isRequired,
+    Genre: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+    }),
+    Director: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+    }),
+    ImageUrl: PropTypes.string.isRequired,
+  }).isRequired,
+  onMovieClick: PropTypes.func.isRequired,
+};
