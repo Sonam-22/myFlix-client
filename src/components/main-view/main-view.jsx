@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 
+import { RegistrationView } from "../registration-view/registration-view";
 import { LoginView } from "../login-view/login-view";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
@@ -10,7 +11,7 @@ export class MainView extends React.Component {
     super();
     this.state = {
       // Creating a list of movies for testing purposes
-
+      showRegistrationForm: false,
       movies: [],
       // Set selectedMovie to null in the beginning, will be used to open MovieView component
 
@@ -36,6 +37,19 @@ export class MainView extends React.Component {
       selectedMovie: newSelectedMovie,
     });
   }
+
+  onRegistration(user) {
+    this.setState({
+      user,
+      showRegistrationForm: false,
+    });
+  }
+
+  onRegister() {
+    this.setState({
+      showRegistrationForm: true,
+    });
+  }
   /* When a user successfully logs in, this function updates the `user` property in state to that particular user*/
 
   onLoggedIn(user) {
@@ -45,12 +59,24 @@ export class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovie, user } = this.state;
+    const { movies, selectedMovie, user, showRegistrationForm } = this.state;
+
+    if (showRegistrationForm)
+      return (
+        <RegistrationView
+          onRegistration={(user) => this.onRegistration(user)}
+        />
+      );
 
     // If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView//
 
     if (!user)
-      return <LoginView onLoggedIn={(user) => this.onLoggedIn(user)} />;
+      return (
+        <LoginView
+          onRegister={() => this.onRegister()}
+          onLoggedIn={(user) => this.onLoggedIn(user)}
+        />
+      );
 
     // If movie list is empty, display default message
 

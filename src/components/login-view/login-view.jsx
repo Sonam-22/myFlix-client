@@ -14,6 +14,14 @@ export function LoginView(props) {
     props.onLoggedIn(username);
   };
 
+  const handleRegistration = (e) => {
+    e.preventDefault();
+    // console.log(username, password, email, birthday);
+    /* Send a request to the server for authentication */
+    /* then call props on registored user(username) */
+    props.onRegister(username);
+  };
+
   return (
     <React.Fragment>
       <form>
@@ -38,7 +46,9 @@ export function LoginView(props) {
         </button>
       </form>
       <p>Not signed up yet?</p>
-      <button>Register</button>
+      <button type="submit" onClick={handleRegistration}>
+        Register
+      </button>
 
       {/* <RegistrationView
         onRegistration={(register) => this.onRegistration(register)}
@@ -52,4 +62,5 @@ LoginView.propTypes = {
     password: PropTypes.string.isRequired,
   }),
   onLoggedIn: PropTypes.func.isRequired,
+  onRegister: PropTypes.func.isRequired,
 };
