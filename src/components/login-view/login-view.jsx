@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import { Card } from "react-bootstrap";
+import "./login-view.scss";
 // import { RegistrationView } from "../registration-view/registration-view";
 
 export function LoginView(props) {
@@ -13,37 +17,57 @@ export function LoginView(props) {
     /* then call props.onLoggedIn(username) */
     props.onLoggedIn(username);
   };
+  const handleRegistration = (e) => {
+    e.preventDefault();
+    // console.log(username, password, email, birthday);
+    /* Send a request to the server for authentication */
+    /* then call props on registored user(username) */
+    props.onRegister(username);
+  };
 
   return (
-    <React.Fragment>
-      <form>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <button type="submit" onClick={handleSubmit}>
-          Submit
-        </button>
-      </form>
-      <p>Not signed up yet?</p>
-      <button>Register</button>
+    <div className="app-container login-container">
+      <Card style={{ width: "40vw" }}>
+        <Card.Body>
+          <Card.Title className="fw-bolder">Login</Card.Title>
+          <Form>
+            <Form.Group controlId="formUsername">
+              <Form.Label>Username:</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId="formPassword">
+              <Form.Label>Password:</Form.Label>
+              <Form.Control
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
 
-      {/* <RegistrationView
+          <div className="mt-2">
+            <Button
+              variant="primary"
+              className="w-100"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Login
+            </Button>
+            <span className="mb-2">Not signed up yet?</span>
+            <Button type="submit" variant="link" onClick={handleRegistration}>
+              Sign up
+            </Button>
+          </div>
+        </Card.Body>
+
+        {/* <RegistrationView
         onRegistration={(register) => this.onRegistration(register)}
       /> */}
-    </React.Fragment>
+      </Card>
+    </div>
   );
 }
 LoginView.propTypes = {

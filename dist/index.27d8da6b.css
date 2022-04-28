@@ -1,0 +1,35 @@
+.login-container {
+  width: 100%;
+  height: 100%;
+  background-image: url("login-banner.047b4a8c.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+
+
+.registration-container {
+  width: 100%;
+  height: 100%;
+  background-image: url("login-banner.047b4a8c.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.my-flix {
+  color: #4682b4;
+}
+
+.app-container {
+  min-height: calc(100vh - 136px);
+}
+
+/*# sourceMappingURL=index.27d8da6b.css.map */
