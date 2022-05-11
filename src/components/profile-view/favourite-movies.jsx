@@ -16,7 +16,7 @@ export function FavoriteMovies({ favoriteMoviesList, removeFav }) {
         ) : (
           favoriteMoviesList.map((movie) => {
             return (
-              <Col xs={12} md={6} lg={3} key={movie._id}>
+              <Col xs={12} md={6} lg={4} key={movie._id}>
                 <Card
                   className="bg-light text-black"
                   border="danger"

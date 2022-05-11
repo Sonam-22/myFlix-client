@@ -129,6 +129,7 @@ export class MainView extends React.Component {
             >
               <Nav>
                 <NavDropdown
+                  align="end"
                   className="text-white"
                   title={user.userName}
                   id="collasible-nav-dropdown"
@@ -181,7 +182,7 @@ export class MainView extends React.Component {
     return (
       <Fragment>
         {header}
-        <Container className="main-view app-container justify-content-md-center py-3">
+        <Container className="main-view app-container py-3">
           <Row>
             <Router>
               <Route
