@@ -56,14 +56,8 @@ export class MovieCard extends React.Component {
       <Card>
         <Card.Img variant="top" src={movie.ImagePath} />
         <Card.Body>
-          <Card.Title>
-            {movie.Title}
-            {this.state.favourite && (
-              <Badge className="ms-2" bg="success">
-                Favourite
-              </Badge>
-            )}
-          </Card.Title>
+          <Card.Title>{movie.Title}</Card.Title>
+          {this.state.favourite && <Badge bg="success">Favourite</Badge>}
           <Card.Text>{movie.Description}</Card.Text>
           <Button className="me-2" href={`/movies/${movie._id}`}>
             Open

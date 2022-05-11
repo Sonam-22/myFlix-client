@@ -5,7 +5,7 @@ export function UserData(props) {
 
   return (
     <Fragment>
-      <h3>{userdata.userName}</h3>
+      <h1 className="text-primary">{userdata.userName}</h1>
       <p>Email: {userdata.email}</p>
       <p>Birthday: {new Date(userdata.birthday).toLocaleDateString()}</p>
     </Fragment>

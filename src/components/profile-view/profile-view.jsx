@@ -80,11 +80,13 @@ export function ProfileView(props) {
   };
 
   return (
-    <Container>
+    <Container className="app-container">
       <Row>
         <Col med={4}>
-          {/* Display userdata */}
-          <UserData userdata={userdata} />
+          <div className="mt-4">
+            {/* Display userdata */}
+            <UserData userdata={userdata} />
+          </div>
 
           {/* List of favorite movies */}
           <div className="mb-2">
@@ -102,7 +104,7 @@ export function ProfileView(props) {
           />
 
           {/* Button to delete user */}
-          <div className="d-flex flex-row gap-4 my-4 justify-content-center align-items-center">
+          <div className="d-flex flex-row p-2 border gap-4 my-4 justify-content-center align-items-center">
             <Button variant="danger" type="submit" onClick={deleteProfile}>
               Delete Profile
             </Button>
