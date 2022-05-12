@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./registration-view.scss";
 import axios from "axios";
+import { API_ROOT } from "../../constants/constants";
 
 import { Form, Button, Card } from "react-bootstrap";
 
@@ -45,7 +46,7 @@ export function RegistrationView(props) {
 
     if (isReq) {
       axios
-        .post("https://rocky-fortress-51190.herokuapp.com/users", {
+        .post(`${API_ROOT}/users`, {
           userName: username,
           password: password,
           email: email,

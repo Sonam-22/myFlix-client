@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import "./movie-card.scss";
 import { Badge } from "react-bootstrap";
+import { API_ROOT } from "../../constants/constants";
 
 export class MovieCard extends React.Component {
   constructor() {
@@ -30,7 +31,7 @@ export class MovieCard extends React.Component {
     const user = JSON.parse(localStorage.getItem("user"));
     axios
       .post(
-        `https://rocky-fortress-51190.herokuapp.com/users/${user.userName}/movies/${movie._id}`,
+        `${API_ROOT}/users/${user.userName}/movies/${movie._id}`,
         {},
         {
           headers: {

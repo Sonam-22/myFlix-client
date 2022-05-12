@@ -7,6 +7,7 @@ import { Nav } from "react-bootstrap";
 import { UserData } from "./user-data";
 import { UpdateUserForm } from "./update-user";
 import { FavoriteMovies } from "./favourite-movies";
+import { API_ROOT } from "../../constants/constants";
 
 export function ProfileView(props) {
   const { onUserUpdated } = props;
@@ -22,10 +23,7 @@ export function ProfileView(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .put(
-        `https://rocky-fortress-51190.herokuapp.com/users/${currentUser.userName}`,
-        userdata
-      )
+      .put(`${API_ROOT}/users/${currentUser.userName}`, userdata)
       .then((response) => {
         alert("Profile updated");
         onUserUpdated(null);
@@ -44,9 +42,7 @@ export function ProfileView(props) {
 
   const deleteProfile = (e) => {
     axios
-      .delete(
-        `https://rocky-fortress-51190.herokuapp.com/users/${userdata.userName}`
-      )
+      .delete(`${API_ROOT}/users/${userdata.userName}`)
       .then((response) => {
         alert("Your profile has beeen deleted");
         onUserUpdated(null);
@@ -60,9 +56,7 @@ export function ProfileView(props) {
 
   const removeFav = (id) => {
     axios
-      .delete(
-        `https://rocky-fortress-51190.herokuapp.com/users/${currentUser.userName}/movies/${id}`
-      )
+      .delete(`${API_ROOT}/users/${currentUser.userName}/movies/${id}`)
       .then(() => {
         const newFavourites = favoriteMoviesList.filter(
           (movie) => movie._id != id

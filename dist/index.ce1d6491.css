@@ -11438,4 +11438,8 @@ textarea.form-control-lg {
   color: #4682b4;
 }
 
+.app-container {
+  min-height: calc(100vh - 136px);
+}
+
 /*# sourceMappingURL=index.ce1d6491.css.map */
