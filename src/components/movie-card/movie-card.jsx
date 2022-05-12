@@ -64,7 +64,10 @@ export class MovieCard extends React.Component {
             Open
           </Button>
           {!this.state.favourite && (
-            <Button onClick={() => this.addToFavourite()}>
+            <Button
+              variant="outline-secondary"
+              onClick={() => this.addToFavourite()}
+            >
               Add to favourite
             </Button>
           )}

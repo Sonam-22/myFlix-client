@@ -37764,6 +37764,7 @@ class MovieCard extends _reactDefault.default.Component {
                             columnNumber: 11
                         }, this),
                         !this.state.favourite && /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_buttonDefault.default, {
+                            variant: "outline-secondary",
                             onClick: ()=>this.addToFavourite()
                             ,
                             children: "Add to favourite"
