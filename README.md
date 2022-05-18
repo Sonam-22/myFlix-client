@@ -16,3 +16,31 @@ Using React, build the client-side for an application called myFlix based on its
 - The application must use Bootstrap as a UI library for styling and responsiveness
 - The application must contain a mix of class components and function components
 - The application may be hosted online
+
+## Tools
+
+- Javascript
+- React
+- React-Redux
+- Parcel
+- React-Bootstrap
+- Redux
+- HTML
+- CSS
+
+## Get Started
+
+- Clone the project `https://github.com/Sonam-22/myFlix-client`
+- Install all dependencies mentioned in package.json
+- cd to the project diretory
+- Run it by:
+
+```bash
+$npm run dev
+```
+
+Note: Please make sure you install parcel v2!
+
+## Deployment and Demo
+
+You can check the live demo here:
