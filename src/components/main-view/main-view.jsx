@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { RegistrationView } from "../registration-view/registration-view";
 import LoginView from "../login-view/login-view";
 import { MovieView } from "../movie-view/movie-view";
-import { DirectorView } from "../director-view/director-view";
-import { GenreView } from "../genre-view/genre-view";
+import DirectorView from "../director-view/director-view";
+import GenreView from "../genre-view/genre-view";
 import ProfileView from "../profile-view/profile-view";
 
 import Row from "react-bootstrap/Row";
@@ -200,12 +200,7 @@ class MainView extends React.Component {
                   return (
                     <Col md={8} sm={12}>
                       <DirectorView
-                        movies={movies}
-                        director={
-                          movies.find(
-                            (m) => m.Director.Name === match.params.name
-                          ).Director
-                        }
+                        director={match.params.name}
                         onBackClick={() => history.goBack()}
                       />
                     </Col>
@@ -220,11 +215,7 @@ class MainView extends React.Component {
                   return (
                     <Col md={8} sm={12}>
                       <GenreView
-                        movies={movies}
-                        genre={
-                          movies.find((m) => m.Genre.Name === match.params.name)
-                            .Genre
-                        }
+                        genre={match.params.name}
                         onBackClick={() => history.goBack()}
                       />
                     </Col>

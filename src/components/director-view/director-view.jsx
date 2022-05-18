@@ -4,9 +4,15 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
+import { Link } from "react-router-dom";
 import { Fragment } from "react";
+import { connect } from "react-redux";
+import { updateUser } from "../../actions/actions";
 
-export function DirectorView(props) {
+function DirectorView(props) {
+  const director = props.movies.find(
+    (m) => m.Director.Name === props.director
+  ).Director;
   return (
     <Fragment>
       <div>
@@ -21,11 +27,11 @@ export function DirectorView(props) {
       </div>
 
       <div className="director-name">
-        <h1 className="display-4">{props.director.Name}</h1>
+        <h1 className="display-4">{director.Name}</h1>
       </div>
 
       <div>
-        <span className="value">{props.director.Bio}</span>
+        <span className="value">{director.Bio}</span>
       </div>
       <br />
       <div>
@@ -34,13 +40,30 @@ export function DirectorView(props) {
 
       <Row className="justify-content-md-center">
         {props.movies
-          .filter((m) => m.Director.Name === props.director.Name)
+          .filter((m) => m.Director.Name === props.director)
           .map((m) => (
             <Col xs={12} sm={6} className="d-flex" key={m._id}>
-              <MovieCard movie={m} />
+              <MovieCard
+                movie={m}
+                auth={props.auth}
+                onUserUpdated={(user) => props.updateUser(user)}
+              />
             </Col>
           ))}
       </Row>
     </Fragment>
   );
 }
+
+const mapStateToProps = (state) => {
+  const { movies, auth } = state;
+  return { movies, auth };
+};
+
+const mapActionsToProps = (dispatch) => ({
+  updateUser: (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
+    dispatch(updateUser(user));
+  },
+});
+export default connect(mapStateToProps, mapActionsToProps)(DirectorView);

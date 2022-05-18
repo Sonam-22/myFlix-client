@@ -6,7 +6,14 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
-export function GenreView(props) {
+import { Link } from "react-router-dom";
+import { Fragment } from "react";
+import { connect } from "react-redux";
+import { updateUser } from "../../actions/actions";
+
+function GenreView(props) {
+  const genre = props.movies.find((m) => m.Genre.Name === props.genre).Genre;
+
   return (
     <Fragment>
       <div>
@@ -21,10 +28,10 @@ export function GenreView(props) {
       </div>
 
       <div>
-        <h1 className="display-4">{props.genre.Name}</h1>
+        <h1 className="display-4">{genre.Name}</h1>
       </div>
       <div>
-        <span className="value">{props.genre.Description}</span>
+        <span className="value">{genre.Description}</span>
       </div>
       <br />
       <div>
@@ -33,13 +40,35 @@ export function GenreView(props) {
 
       <Row className="justify-content-md-center">
         {props.movies
-          .filter((m) => m.Genre.Name === props.genre.Name)
+          .filter((m) => m.Genre.Name === props.genre)
           .map((m) => (
             <Col xs={12} sm={6} className="d-flex" key={m._id}>
-              <MovieCard movie={m} />
+              <MovieCard
+                movie={m}
+                auth={props.auth}
+                onUserUpdated={(user) => props.updateUser(user)}
+              />
             </Col>
           ))}
       </Row>
+
+      {/* <Link to={"/"}>
+        <Button variant="outline-dark">Back to full list</Button>
+      </Link> */}
     </Fragment>
   );
 }
+
+const mapStateToProps = (state) => {
+  const { movies, auth } = state;
+  return { movies, auth };
+};
+
+const mapActionsToProps = (dispatch) => ({
+  updateUser: (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
+    dispatch(updateUser(user));
+  },
+});
+
+export default connect(mapStateToProps, mapActionsToProps)(GenreView);
