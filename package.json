@@ -5,7 +5,9 @@
   "entry": "src/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "parcel ./src/index.html"
+    "dev": "parcel ./src/index.html",
+    "build:parcel": "parcel build src/index.html --public-url /",
+    "build": "npm run build:parcel && cp _redirects dist"
   },
   "repository": {
     "type": "git",
@@ -31,8 +33,8 @@
     "redux-devtools-extension": "^2.13.9"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.4.1",
-    "parcel": "^2.4.1",
+    "@parcel/transformer-sass": "^2.5.0",
+    "parcel": "^2.5.0",
     "process": "^0.11.10"
   }
 }
