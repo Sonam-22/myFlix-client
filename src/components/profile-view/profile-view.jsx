@@ -8,17 +8,29 @@ import { UserData } from "./user-data";
 import { UpdateUserForm } from "./update-user";
 import { FavoriteMovies } from "./favourite-movies";
 import { API_ROOT } from "../../constants/constants";
+import { setUser, updateUser } from "../../actions/actions";
+import { connect } from "react-redux";
 
-export function ProfileView(props) {
-  const { onUserUpdated } = props;
+function ProfileView(props) {
   const [userdata, setUserdata] = useState(props.user);
   const [favoriteMoviesList, setFavoriteMoviesList] = useState([
     ...props.movies.filter((m) => props.user.favouriteMovies.includes(m._id)),
   ]);
 
-  const token = localStorage.getItem("token");
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const token = props.auth.token;
+  const currentUser = props.auth.user;
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+  const handleUserUpdate = (user) => {
+    if (!user) {
+      props.setUser(null, null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      return;
+    }
+    props.updateUser(user);
+    localStorage.setItem("user", JSON.stringify(user));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,7 +38,7 @@ export function ProfileView(props) {
       .put(`${API_ROOT}/users/${currentUser.userName}`, userdata)
       .then((response) => {
         alert("Profile updated");
-        onUserUpdated(null);
+        handleUserUpdate(null);
       })
       .catch((e) => {
         console.log(e);
@@ -45,7 +57,7 @@ export function ProfileView(props) {
       .delete(`${API_ROOT}/users/${userdata.userName}`)
       .then((response) => {
         alert("Your profile has beeen deleted");
-        onUserUpdated(null);
+        handleUserUpdate(null);
 
         window.open("/", "_self");
       })
@@ -61,12 +73,12 @@ export function ProfileView(props) {
         const newFavourites = favoriteMoviesList.filter(
           (movie) => movie._id != id
         );
-        const currentUser = JSON.parse(localStorage.getItem("user"));
+
         currentUser.favouriteMovies = currentUser.favouriteMovies.filter(
           (fmId) => id !== fmId
         );
         setFavoriteMoviesList(newFavourites);
-        onUserUpdated(currentUser);
+        handleUserUpdate(currentUser);
       })
       .catch((e) => {
         console.log(e);
@@ -109,3 +121,11 @@ export function ProfileView(props) {
     </Container>
   );
 }
+
+let mapStateToProps = (state) => {
+  return {
+    auth: state.auth || {},
+  };
+};
+
+export default connect(mapStateToProps, { setUser, updateUser })(ProfileView);

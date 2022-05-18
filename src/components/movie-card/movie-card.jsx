@@ -9,6 +9,8 @@ import "./movie-card.scss";
 import { Badge } from "react-bootstrap";
 import { API_ROOT } from "../../constants/constants";
 
+import heart from "../../assets/icons/heart.svg";
+
 export class MovieCard extends React.Component {
   constructor() {
     super();
@@ -18,17 +20,17 @@ export class MovieCard extends React.Component {
   }
 
   componentDidMount() {
-    const { movie } = this.props;
-    const user = JSON.parse(localStorage.getItem("user"));
+    const { movie, auth } = this.props;
+    const user = auth.user;
     this.setState({
       favourite: user.favouriteMovies.includes(movie._id),
     });
   }
 
   addToFavourite() {
-    const { movie, onUserUpdated } = this.props;
-    const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user"));
+    const { movie, onUserUpdated, auth } = this.props;
+    const token = auth.token;
+    const user = auth.user;
     axios
       .post(
         `${API_ROOT}/users/${user.userName}/movies/${movie._id}`,
@@ -43,8 +45,11 @@ export class MovieCard extends React.Component {
         this.setState({
           favourite: true,
         });
-        user.favouriteMovies.push(movie._id);
-        onUserUpdated(user);
+        const newUser = {
+          ...user,
+          favouriteMovies: user.favouriteMovies.concat(movie._id),
+        };
+        onUserUpdated(newUser);
       })
       .catch((e) => {
         console.log(e);
@@ -55,11 +60,20 @@ export class MovieCard extends React.Component {
     const { movie } = this.props;
     return (
       <Card>
-        <Card.Img variant="top" src={movie.ImagePath} />
+        <Card.Img
+          variant="top"
+          style={{
+            height: "25vh",
+          }}
+          src={movie.ImagePath}
+        />
         <Card.Body>
-          <Card.Title>{movie.Title}</Card.Title>
-          {this.state.favourite && <Badge bg="success">Favourite</Badge>}
-          <Card.Text>{movie.Description}</Card.Text>
+          <Card.Title>
+            {movie.Title}
+            {this.state.favourite && <img className="ms-2" src={heart}></img>}
+          </Card.Title>
+
+          <Card.Text className="text-truncate">{movie.Description}</Card.Text>
           <Button className="me-2" href={`/movies/${movie._id}`}>
             Open
           </Button>

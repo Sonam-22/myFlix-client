@@ -1,86 +1,65 @@
 import React, { Fragment } from "react";
 import axios from "axios";
+import { connect } from "react-redux";
 
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-
-import { LoginView } from "../login-view/login-view";
 import { RegistrationView } from "../registration-view/registration-view";
-import { LoginView } from "../login-view/login-view";
-import { MovieCard } from "../movie-card/movie-card";
+import LoginView from "../login-view/login-view";
 import { MovieView } from "../movie-view/movie-view";
 import { DirectorView } from "../director-view/director-view";
 import { GenreView } from "../genre-view/genre-view";
-import { ProfileView } from "../profile-view/profile-view";
+import ProfileView from "../profile-view/profile-view";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { Alert, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { API_ROOT } from "../../constants/constants";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import "./main-view.scss";
 
-export class MainView extends React.Component {
+import { setMovies, setUser } from "../../actions/actions";
+
+import MoviesList from "../movies-list/movies-list";
+
+class MainView extends React.Component {
   constructor() {
     super();
     this.state = {
       // Creating a list of movies for testing purposes
       showRegistrationForm: false,
-      movies: [],
-      // Set selectedMovie to null in the beginning, will be used to open MovieView component
-
-      // selectedMovie: null,
-      user: null,
     };
   }
 
   logout() {
-    this.setState({
-      user: null,
-    });
-
+    this.props.setUser(null, null);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
   }
 
-  getMovies(token) {
-    axios
-      .get(`${API_ROOT}/movies`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        // Assign the result to the state
-        this.setState({
-          movies: response.data,
+  getMovies() {
+    const { token } = this.props.auth;
+    token &&
+      axios
+        .get(`${API_ROOT}/movies`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          // Assign the result to the state
+          this.props.setMovies(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
         });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
   }
 
   componentDidMount() {
-    let accessToken = localStorage.getItem("token");
-    const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    if (accessToken !== null) {
-      this.setState({
-        user: loggedInUser,
-      });
-      this.getMovies(accessToken);
-    }
+    this.getMovies();
   }
 
-  // Create function to set the state of selectedMovie to the newSelectedMovie passed in onMovieClick and onBackClick props
-
-  setSelectedMovie(newSelectedMovie) {
-    this.setState({
-      selectedMovie: newSelectedMovie,
-    });
-  }
   /* When a user successfully logs in, this function updates the `user` property in state to that particular user*/
 
-  onRegistration(user) {
+  onRegistration() {
     this.setState({
-      user,
       showRegistrationForm: false,
     });
   }
@@ -91,28 +70,17 @@ export class MainView extends React.Component {
     });
   }
 
-  onLoggedIn(authData) {
-    localStorage.setItem("token", authData.token);
-    localStorage.setItem("user", JSON.stringify(authData.user));
-    this.setState({
-      user: authData.user,
-    });
-    this.getMovies(authData.token);
-  }
-
-  handleUserUpdate(user) {
-    this.setState({
-      user,
-    });
-    if (!user) {
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-    }
-    localStorage.setItem("user", JSON.stringify(user));
+  onLoggedIn() {
+    this.getMovies();
   }
 
   render() {
-    const { movies, selectedMovie, user, showRegistrationForm } = this.state;
+    let { showRegistrationForm } = this.state;
+    let {
+      movies,
+      auth: { user },
+    } = this.props;
+    //const { movies, selectedMovie, user, showRegistrationForm } = this.state;
 
     const header = (
       <Navbar bg="dark" collapseOnSelect expand="lg" variant="dark">
@@ -173,7 +141,7 @@ export class MainView extends React.Component {
           {header}
           <LoginView
             onRegister={() => this.onRegister()}
-            onLoggedIn={(user) => this.onLoggedIn(user)}
+            onLoggedIn={() => this.onLoggedIn()}
           />
           {footer}
         </Fragment>
@@ -192,14 +160,7 @@ export class MainView extends React.Component {
                   return movies.length === 0 ? (
                     <div>Loading</div>
                   ) : (
-                    movies.map((m) => (
-                      <Col sm={12} md={3} key={m._id}>
-                        <MovieCard
-                          movie={m}
-                          onUserUpdated={(user) => this.handleUserUpdate(user)}
-                        />
-                      </Col>
-                    ))
+                    <MoviesList></MoviesList>
                   );
                 }}
               />
@@ -281,7 +242,6 @@ export class MainView extends React.Component {
                         history={history}
                         movies={movies}
                         user={user}
-                        onUserUpdated={(user) => this.handleUserUpdate(user)}
                       />
                     </Col>
                   );
@@ -295,3 +255,11 @@ export class MainView extends React.Component {
     );
   }
 }
+let mapStateToProps = (state) => {
+  return {
+    movies: state.movies,
+    auth: state.auth || {},
+  };
+};
+
+export default connect(mapStateToProps, { setMovies, setUser })(MainView);

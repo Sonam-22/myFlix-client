@@ -7,10 +7,12 @@ import "./login-view.scss";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { API_ROOT } from "../../constants/constants";
+import { connect } from "react-redux";
+import { setUser } from "../../actions/actions";
 
 // import { RegistrationView } from "../registration-view/registration-view";
 
-export function LoginView(props) {
+function LoginView(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -48,7 +50,11 @@ export function LoginView(props) {
           password: password,
         })
         .then((response) => {
-          props.onLoggedIn(response.data);
+          const { data } = response;
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+          props.setUser(data.token, data.user);
+          props.onLoggedIn();
         })
         .catch((e) => {
           console.log("no such user");
@@ -125,3 +131,5 @@ LoginView.propTypes = {
   }),
   onLoggedIn: PropTypes.func.isRequired,
 };
+
+export default connect(null, { setUser })(LoginView);
