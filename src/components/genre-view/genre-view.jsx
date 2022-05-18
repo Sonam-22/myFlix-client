@@ -6,11 +6,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
-import { Link } from "react-router-dom";
-
 export function GenreView(props) {
   return (
-    <>
+    <Fragment>
       <div>
         <Button
           variant="outline-light"
@@ -42,10 +40,6 @@ export function GenreView(props) {
             </Col>
           ))}
       </Row>
-
-      <Link to={"/"}>
-        <Button variant="outline-light">Back to full list</Button>
-      </Link>
-    </>
+    </Fragment>
   );
 }

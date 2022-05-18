@@ -4,7 +4,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
-import { Link } from "react-router-dom";
 import { Fragment } from "react";
 
 export function DirectorView(props) {
@@ -42,10 +41,6 @@ export function DirectorView(props) {
             </Col>
           ))}
       </Row>
-
-      <Link to={"/"}>
-        <Button variant="outline-light">Back to full list</Button>
-      </Link>
     </Fragment>
   );
 }
